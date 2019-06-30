@@ -1,16 +1,22 @@
+import flask
 from pytube import YouTube
-from flask import Flask, request, render_template
-import settings
 
 
-app = Flask(__name__)
+app = flask.Flask(__name__)
 
 
-yt = YouTube('https://www.youtube.com/watch?v=LnmROydlJn0&t=3s')
-c = yt.captions.get_by_language_code('pt').generate_srt_captions()
-
-
-@app.route("/")
+@app.route('/')
 def home():
-    legends = [x for x in c.split('\n')]
-    return render_template('index.html', legends=legends)
+    return 'Olá Gente!'
+
+
+@app.route('/legendas/<url_video>')
+def legenda(url_video):
+    return criar_legenda(url_video)
+
+
+def criar_legenda(codigo_video):
+    link_video = f'https://www.youtube.com/watch?v={codigo_video}'
+    yt = YouTube(link_video)
+    legenda = yt.captions.get_by_language_code('pt')
+    return legenda.xml_captions
