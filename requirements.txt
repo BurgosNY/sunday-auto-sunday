@@ -1,3 +1,4 @@
 django-environ
 flask
 pytube
+gunicorn
